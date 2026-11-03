@@ -1,26 +1,98 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
+
+  --navy: #0b1d3a;
+  --navy-900: #061128;
+  --steel: #1f3a5f;
+  --ink: #111418;
+  --slate: #5b6470;
+  --line: #d9dee5;
+  --paper: #f6f7f9;
+  --white: #ffffff;
+  --accent: #c8102e;
+  --accent-dark: #9e0c24;
+  /* --accent on navy is only 2.85:1. Accent text on dark backgrounds uses this
+     lighter step of the same red (4.7:1 on navy) so it stays legible. */
+  --accent-on-dark: #f2495f;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-navy: var(--navy);
+  --color-navy-900: var(--navy-900);
+  --color-steel: var(--steel);
+  --color-ink: var(--ink);
+  --color-slate: var(--slate);
+  --color-line: var(--line);
+  --color-paper: var(--paper);
+  --color-white: var(--white);
+  --color-accent: var(--accent);
+  --color-accent-dark: var(--accent-dark);
+  --color-accent-on-dark: var(--accent-on-dark);
+
+  /* --font-body and --font-display are set on <html> by next/font in layout.tsx.
+     Utilities: font-sans (Roboto, the default) and font-heading (Quantico). */
+  --font-sans: var(--font-body);
+  --font-heading: var(--font-display);
+
+  --radius-ui: 6px;
+
+  --text-hero: clamp(2.5rem, 1.6rem + 3.6vw, 4.5rem);
+  --text-hero--line-height: 1;
+  --text-hero--letter-spacing: 0.03em;
+  --text-h2: clamp(1.875rem, 1.4rem + 2vw, 2.75rem);
+  --text-h2--line-height: 1.1;
+  --text-h2--letter-spacing: 0.03em;
+  --text-stat: clamp(2.5rem, 2.2rem + 1vw, 3rem);
+  --text-stat--line-height: 1;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    /* Keeps anchor targets clear of the 72px sticky navbar. */
+    scroll-padding-top: 72px;
+  }
+
+  body {
+    background: var(--white);
+    color: var(--ink);
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
+  @media (width >= 48rem) {
+    body {
+      font-size: 1.0625rem;
+    }
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .on-dark :focus-visible {
+    outline-color: var(--white);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Fade-up on scroll, driven by components/site/RevealObserver.tsx. Content stays
+   visible when scripting is off or the visitor prefers reduced motion. */
+@layer components {
+  @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+    .reveal {
+      opacity: 0;
+      transform: translateY(12px);
+      transition:
+        opacity 300ms ease-out,
+        transform 300ms ease-out,
+        border-color 150ms ease-out;
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: none;
+    }
+  }
 }
