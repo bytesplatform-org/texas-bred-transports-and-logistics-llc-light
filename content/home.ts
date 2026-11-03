@@ -23,7 +23,7 @@ export const company = {
     full: "929 Oak Street, Houston, TX 77018",
   },
   // TODO(client): replace with real values.
-  yearsInOperation: "[XX]+",
+  yearsInOperation: "2+",
   yearEstablished: "[YEAR]",
 };
 
